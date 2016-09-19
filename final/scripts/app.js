@@ -18,6 +18,7 @@
 
   var app = {
     isLoading: true,
+    usingInitialWeatherForecast: true,
     visibleCards: {},
     selectedCities: [],
     spinner: document.querySelector('.loader'),
@@ -348,6 +349,7 @@
     app.selectedCities.forEach(function(city) {
       app.getForecast(city.key, city.label);
     });
+    app.usingInitialWeatherForecast = false;
   } else {
     /* The user is using the app for the first time, or the user has not
      * saved any cities, so show the user some fake data. A real app in this
@@ -365,6 +367,11 @@
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
              .register('./service-worker.js')
-             .then(function() { console.log('Service Worker Registered'); });
+             .then(function() {
+               console.log('Service Worker Registered');
+               if(app.usingInitialWeatherForecast) {
+                 app.getForecast(initialWeatherForecast.key, initialWeatherForecast.label);
+               }
+             });
   }
 })();
