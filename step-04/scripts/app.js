@@ -104,7 +104,7 @@
     var cardLastUpdated = cardLastUpdatedElem.textContent;
     if (cardLastUpdated) {
       cardLastUpdated = new Date(cardLastUpdated);
-      // Bail if the card has more recent data then the data
+      // Bail if the card has more recent data than the data
       if (dataLastUpdated.getTime() < cardLastUpdated.getTime()) {
         return;
       }
