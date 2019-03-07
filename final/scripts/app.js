@@ -84,11 +84,11 @@
   // doesn't already exist, it's cloned from the template.
   app.updateForecastCard = function(data) {
     var dataLastUpdated = new Date(data.created);
-    var sunrise = data.channel.astronomy.sunrise;
-    var sunset = data.channel.astronomy.sunset;
-    var current = data.channel.item.condition;
-    var humidity = data.channel.atmosphere.humidity;
-    var wind = data.channel.wind;
+    var sunrise = data.current_observation.astronomy.sunrise;
+    var sunset = data.current_observation.astronomy.sunset;
+    var current = data.current_observation.condition;
+    var humidity = data.current_observation.atmosphere.humidity;
+    var wind = data.current_observation.wind;
 
     var card = app.visibleCards[data.key];
     if (!card) {
@@ -107,7 +107,7 @@
     var cardLastUpdated = cardLastUpdatedElem.textContent;
     if (cardLastUpdated) {
       cardLastUpdated = new Date(cardLastUpdated);
-      // Bail if the card has more recent data then the data
+      // Bail if the card has more recent data than the data
       if (dataLastUpdated.getTime() < cardLastUpdated.getTime()) {
         return;
       }
@@ -118,7 +118,7 @@
     card.querySelector('.date').textContent = current.date;
     card.querySelector('.current .icon').classList.add(app.getIconClass(current.code));
     card.querySelector('.current .temperature .value').textContent =
-      Math.round(current.temp);
+      Math.round(current.temperature);
     card.querySelector('.current .sunrise').textContent = sunrise;
     card.querySelector('.current .sunset').textContent = sunset;
     card.querySelector('.current .humidity').textContent =
@@ -131,7 +131,7 @@
     today = today.getDay();
     for (var i = 0; i < 7; i++) {
       var nextDay = nextDays[i];
-      var daily = data.channel.item.forecast[i];
+      var daily = data.forecasts[i];
       if (daily && nextDay) {
         nextDay.querySelector('.date').textContent =
           app.daysOfWeek[(i + today) % 7];
@@ -165,9 +165,13 @@
    * freshest data.
    */
   app.getForecast = function(key, label) {
-    var statement = 'select * from weather.forecast where woeid=' + key;
-    var url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' +
-        statement;
+
+    // Weather API sample javascript code
+    // Requires: jQuery and crypto-js (v3.1.9)
+    // 
+    // Copyright 2019 Oath Inc. Licensed under the terms of the zLib license see https://opensource.org/licenses/Zlib for terms.
+    
+    var url = 'https://weather-ydn-yql.media.yahoo.com/forecastrss';
     // TODO add cache logic here
     if ('caches' in window) {
       /*
@@ -188,24 +192,59 @@
       });
     }
     // Fetch the latest data.
-    var request = new XMLHttpRequest();
-    request.onreadystatechange = function() {
-      if (request.readyState === XMLHttpRequest.DONE) {
-        if (request.status === 200) {
-          var response = JSON.parse(request.response);
-          var results = response.query.results;
+    var method = 'GET';
+    var app_id = ''; // TODO add app_id
+    var consumer_key = ''; // TODO add consumer_key
+    var consumer_secret = ''; // TODO add consumer_secret
+    var concat = '&';
+    var query = {'woeid': key, 'format': 'json'};
+    var oauth = {
+        'oauth_consumer_key': consumer_key,
+        'oauth_nonce': Math.random().toString(36).substring(2),
+        'oauth_signature_method': 'HMAC-SHA1',
+        'oauth_timestamp': parseInt(new Date().getTime() / 1000).toString(),
+        'oauth_version': '1.0'
+    };
+
+    var merged = {}; 
+    $.extend(merged, query, oauth);
+    // Note the sorting here is required
+    var merged_arr = Object.keys(merged).sort().map(function(k) {
+      return [k + '=' + encodeURIComponent(merged[k])];
+    });
+    var signature_base_str = method
+      + concat + encodeURIComponent(url)
+      + concat + encodeURIComponent(merged_arr.join(concat));
+
+    var composite_key = encodeURIComponent(consumer_secret) + concat;
+    var hash = CryptoJS.HmacSHA1(signature_base_str, composite_key);
+    var signature = hash.toString(CryptoJS.enc.Base64);
+
+    oauth['oauth_signature'] = signature;
+    var auth_header = 'OAuth ' + Object.keys(oauth).map(function(k) {
+      return [k + '="' + oauth[k] + '"'];
+    }).join(',');
+
+    $.ajax({
+      url: url + '?' + $.param(query),
+      headers: {
+        'Authorization': auth_header,
+        'Yahoo-App-Id': app_id 
+      },
+      method: 'GET',
+      success: function(data){
+        if (data) {
+          var results = data;
           results.key = key;
           results.label = label;
-          results.created = response.query.created;
+          results.created = oauth.oauth_timestamp;
           app.updateForecastCard(results);
+        } else {
+          // Return the initial weather forecast since no data is available.
+          app.updateForecastCard(initialWeatherForecast);    
         }
-      } else {
-        // Return the initial weather forecast since no data is available.
-        app.updateForecastCard(initialWeatherForecast);
       }
-    };
-    request.open('GET', url);
-    request.send();
+    });
   };
 
   // Iterate all of the cards and attempt to get the latest forecast data
@@ -296,27 +335,15 @@
     key: '2459115',
     label: 'New York, NY',
     created: '2016-07-22T01:00:00Z',
-    channel: {
+    current_observation: {
       astronomy: {
         sunrise: "5:43 am",
         sunset: "8:21 pm"
       },
-      item: {
-        condition: {
-          text: "Windy",
-          date: "Thu, 21 Jul 2016 09:00 PM EDT",
-          temp: 56,
-          code: 24
-        },
-        forecast: [
-          {code: 44, high: 86, low: 70},
-          {code: 44, high: 94, low: 73},
-          {code: 4, high: 95, low: 78},
-          {code: 24, high: 75, low: 89},
-          {code: 24, high: 89, low: 77},
-          {code: 44, high: 92, low: 79},
-          {code: 44, high: 89, low: 77}
-        ]
+      condition: {
+        text: "Windy",
+        temperature: 56,
+        code: 24
       },
       atmosphere: {
         humidity: 56
@@ -324,8 +351,18 @@
       wind: {
         speed: 25,
         direction: 195
-      }
-    }
+      },
+      pubDate: "Thu, 21 Jul 2016 09:00 PM EDT",
+    },
+    forecasts: [
+      {code: 44, high: 86, low: 70},
+      {code: 44, high: 94, low: 73},
+      {code: 4, high: 95, low: 78},
+      {code: 24, high: 75, low: 89},
+      {code: 24, high: 89, low: 77},
+      {code: 44, high: 92, low: 79},
+      {code: 44, high: 89, low: 77}
+    ]
   };
   // TODO uncomment line below to test app with fake data
   // app.updateForecastCard(initialWeatherForecast);

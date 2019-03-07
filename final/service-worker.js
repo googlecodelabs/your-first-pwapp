@@ -35,7 +35,7 @@ var filesToCache = [
 ];
 
 self.addEventListener('install', function(e) {
-  console.log('[ServiceWorker] Install');
+  console.log('[Service Worker] Install');
   e.waitUntil(
     caches.open(cacheName).then(function(cache) {
       console.log('[ServiceWorker] Caching app shell');
@@ -45,7 +45,7 @@ self.addEventListener('install', function(e) {
 });
 
 self.addEventListener('activate', function(e) {
-  console.log('[ServiceWorker] Activate');
+  console.log('[Service Worker] Activate');
   e.waitUntil(
     caches.keys().then(function(keyList) {
       return Promise.all(keyList.map(function(key) {
@@ -71,7 +71,7 @@ self.addEventListener('activate', function(e) {
 
 self.addEventListener('fetch', function(e) {
   console.log('[Service Worker] Fetch', e.request.url);
-  var dataUrl = 'https://query.yahooapis.com/v1/public/yql';
+  var dataUrl = 'https://weather-ydn-yql.media.yahoo.com/forecastrss';
   if (e.request.url.indexOf(dataUrl) > -1) {
     /*
      * When the request URL contains dataUrl, the app is asking for fresh
@@ -82,7 +82,7 @@ self.addEventListener('fetch', function(e) {
      */
     e.respondWith(
       caches.open(dataCacheName).then(function(cache) {
-        return fetch(e.request).then(function(response){
+        return fetch(e.request).then(function(response) {
           cache.put(e.request.url, response.clone());
           return response;
         });
