@@ -223,6 +223,26 @@ body {
   background-image: url("/images/tornado.svg");
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+}
+
 /**
  * Main body
  */
@@ -257,6 +277,7 @@ body {
  */
 
 #addDialogContainer {
+  display: none;
   background: rgba(0, 0, 0, 0.57);
   height: 100%;
   left: 0;
@@ -270,6 +291,7 @@ body {
 }
 
 #addDialogContainer.visible {
+  display: block;
   opacity: 1;
   pointer-events: auto;
 }
@@ -323,6 +345,28 @@ body {
 /**
  * Weather forecast card
  */
+
+table {
+  width: 100%;
+  margin: 0 auto;
+  border: 0;
+}
+
+table th {
+  text-align: left;
+  font-weight: normal;
+}
+
+
+dt:before {
+  content: "";
+  display: block;
+}
+
+dt, dd {
+  display: inline;
+  margin: 0;
+}
 
 .weather-card {
   background: #fff;
@@ -381,28 +425,19 @@ body {
   color: #666;
 }
 
-.weather-card .future {
-  display: flex;
-}
-
-.weather-card .future .oneday {
-  flex-grow: 1;
-  text-align: center;
-}
-
-.weather-card .future .oneday .icon {
+.weather-card .future .icon {
   height: 64px;
   margin-left: auto;
   margin-right: auto;
   width: 64px;
 }
 
-.weather-card .future .oneday .temp-high,
-.weather-card .future .oneday .temp-low {
+.weather-card .future .temp-high,
+.weather-card .future .temp-low {
   display: inline-block;
 }
 
-.weather-card .future .oneday .temp-low {
+.weather-card .future .temp-low {
   color: #666;
 }
 
@@ -411,6 +446,11 @@ body {
  */
 
 @media (max-width: 450px) {
+
+  .weather-card .current, .weather-card dl {
+    display: block;
+  }
+
   .weather-card .date,
   .weather-card .description {
     font-size: 0.9em;
@@ -425,7 +465,7 @@ body {
     font-size: 3em;
   }
 
-  .weather-card .future .oneday .icon {
+  .weather-card .future .icon {
     height: 32px;
     width: 32px;
   }

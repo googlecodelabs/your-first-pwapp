@@ -63,10 +63,10 @@
           <circle cx="16" cy="16" r="14" fill="none"></circle>
         </svg>
       </div>
-      <button class="remove-city">&times;</button>
+      <button class="remove-city" aria-label="remove the city">&times;</button>
       <div class="city-key" hidden></div>
       <div class="card-last-updated" hidden></div>
-      <div class="location">&nbsp;</div>
+      <h2 class="location">&nbsp;</h2>
       <div class="date">&nbsp;</div>
       <div class="description">&nbsp;</div>
       <div class="current">
@@ -76,103 +76,107 @@
             <span class="value"></span><span class="scale">°F</span>
           </div>
         </div>
-        <div class="description">
-          <div class="humidity">
-            <span class="label">Humidity:</span>
-            <span class="value"></span><span class="scale">%</span>
-          </div>
-          <div class="wind">
-            <span class="label">Wind:</span>
-            <span class="value"></span>
+        <dl class="description">
+          <dt class="label">Humidity:</dt>
+          <dd class="humidity"><span class="value"></span><span class="scale">%</span></dd>
+          <dt><span class="label">Wind:</span></dt>
+          <dd class="wind"><span class="value"></span>
             <span class="scale">mph</span>
-            <span class="direction"></span>°
-          </div>
-          <div class="sunrise">
-            <span class="label">Sunrise:</span>
-            <span class="value"></span>
-          </div>
-          <div class="sunset">
-              <span class="label">Sunrise:</span>
-              <span class="value"></span>
-            </div>
-        </div>
+            <span class="direction"></span>°</dd>
+          <dt><span class="label">Sunrise:</span></dt>
+          <dd class="sunrise"><span class="value"></span></dd>
+          <dt><span class="label">Sunset:</span></dt>
+          <dd class="sunset"><span class="value"></span></dd>
+        </dl>
       </div>
       <div class="future">
-        <div class="oneday">
-          <div class="date"></div>
-          <div class="icon"></div>
-          <div class="temp-high">
-            <span class="value"></span>°
-          </div>
-          <div class="temp-low">
-            <span class="value"></span>°
-          </div>
-        </div>
-        <div class="oneday">
-          <div class="date"></div>
-          <div class="icon"></div>
-          <div class="temp-high">
-            <span class="value"></span>°
-          </div>
-          <div class="temp-low">
-            <span class="value"></span>°
-          </div>
-        </div>
-        <div class="oneday">
-          <div class="date"></div>
-          <div class="icon"></div>
-          <div class="temp-high">
-            <span class="value"></span>°
-          </div>
-          <div class="temp-low">
-            <span class="value"></span>°
-          </div>
-        </div>
-        <div class="oneday">
-          <div class="date"></div>
-          <div class="icon"></div>
-          <div class="temp-high">
-            <span class="value"></span>°
-          </div>
-          <div class="temp-low">
-            <span class="value"></span>°
-          </div>
-        </div>
-        <div class="oneday">
-          <div class="date"></div>
-          <div class="icon"></div>
-          <div class="temp-high">
-            <span class="value"></span>°
-          </div>
-          <div class="temp-low">
-            <span class="value"></span>°
-          </div>
-        </div>
-        <div class="oneday">
-          <div class="date"></div>
-          <div class="icon"></div>
-          <div class="temp-high">
-            <span class="value"></span>°
-          </div>
-          <div class="temp-low">
-            <span class="value"></span>°
-          </div>
-        </div>
-        <div class="oneday">
-          <div class="date"></div>
-          <div class="icon"></div>
-          <div class="temp-high">
-            <span class="value"></span>°
-          </div>
-          <div class="temp-low">
-            <span class="value"></span>°
-          </div>
-        </div>
+        <table summary="the weather the next 7 days">
+          <thead>
+            <tr>
+              <th class="date"></th>
+              <th class="date"></th>
+              <th class="date"></th>
+              <th class="date"></th>
+              <th class="date"></th>
+              <th class="date"></th>
+              <th class="date"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="icon"></td>
+              <td class="icon"></td>
+              <td class="icon"></td>
+              <td class="icon"></td>
+              <td class="icon"></td>
+              <td class="icon"></td>
+              <td class="icon"></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="temp-high">
+                  <span class="value"></span>°
+                </div>
+                <div class="temp-low">
+                  <span class="value"></span>°
+                </div>
+              </td>
+              <td>
+                  <div class="temp-high">
+                    <span class="value"></span>°
+                  </div>
+                  <div class="temp-low">
+                    <span class="value"></span>°
+                  </div>
+              </td>
+              <td>
+                <div class="temp-high">
+                  <span class="value"></span>°
+                </div>
+                <div class="temp-low">
+                  <span class="value"></span>°
+                </div>
+              </td>
+              <td>
+                <div class="temp-high">
+                  <span class="value"></span>°
+                </div>
+                <div class="temp-low">
+                  <span class="value"></span>°
+                </div>
+              </td>
+              <td>
+                <div class="temp-high">
+                  <span class="value"></span>°
+                </div>
+                <div class="temp-low">
+                  <span class="value"></span>°
+                </div>
+                </td>
+                <td>
+                  <div class="temp-high">
+                    <span class="value"></span>°
+                  </div>
+                  <div class="temp-low">
+                    <span class="value"></span>°
+                  </div>
+                </td>
+              <td>
+                <div class="temp-high">
+                  <span class="value"></span>°
+                </div>
+                <div class="temp-low">
+                  <span class="value"></span>°
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </main>
 
-  <div id="addDialogContainer">
+  <div id="addDialogContainer" aria-hidden="true">
     <div class="dialog">
       <div class="dialog-title">Add new city</div>
       <div class="dialog-body">
@@ -199,6 +203,7 @@
     </div>
   </div>
 
+  <script src="/scripts/inert.min.js"></script>
   <script src="/scripts/luxon-1.11.4.js"></script>
   <script src="/scripts/app.js"></script>
   <!-- CODELAB: Add the install script here -->
