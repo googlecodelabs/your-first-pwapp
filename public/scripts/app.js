@@ -23,10 +23,32 @@ const weatherApp = {
 };
 
 /**
+ * It will keep the focus inside the dialog
+ * It uses the inert attribute
+ * https://github.com/WICG/inert
+ */
+function blockModal(dialog, value) {
+  Array.from(document.body.children).forEach(child => {
+    if(child !== dialog) {
+      child.inert = value;
+    }
+  });
+}
+
+/**
  * Toggles the visibility of the add location dialog box.
  */
 function toggleAddDialog() {
+  let ariaHidden = weatherApp.addDialogContainer.getAttribute('aria-hidden') === 'true' ? 'false' : 'true';
   weatherApp.addDialogContainer.classList.toggle('visible');
+  weatherApp.addDialogContainer.setAttribute('aria-hidden', ariaHidden);
+  // the dialog is going to be visible
+  // we trap the focus inside the dialog
+  if(weatherApp.addDialogContainer.classList.contains('visible')) {
+    blockModal(weatherApp.addDialogContainer, true);
+  } else {
+    blockModal(weatherApp.addDialogContainer, false);
+  }
 }
 
 /**
@@ -63,6 +85,16 @@ function removeLocation(evt) {
     delete weatherApp.selectedLocations[parent.id];
     saveLocationList(weatherApp.selectedLocations);
   }
+}
+
+/**
+ * Receives an icon name and returns the name
+ * For example, partly-cloudy-night returns partly cloudy night
+ *
+ * @param {String} icon
+ */
+function parseIcon(icon) {
+  return icon.replace(/-/g, ' ');
 }
 
 /**
@@ -117,20 +149,20 @@ function renderForecast(card, data) {
   card.querySelector('.current .sunset .value').textContent = sunset;
 
   // Render the next 7 days.
-  const futureTiles = card.querySelectorAll('.future .oneday');
-  futureTiles.forEach((tile, index) => {
+  const futureTiles = card.querySelector('.future');
+  let index = 0;
+  for(; index < 7; index++) {
     const forecast = data.daily.data[index + 1];
     const forecastFor = luxon.DateTime
         .fromSeconds(forecast.time)
         .setZone(data.timezone)
         .toFormat('ccc');
-    tile.querySelector('.date').textContent = forecastFor;
-    tile.querySelector('.icon').className = `icon ${forecast.icon}`;
-    tile.querySelector('.temp-high .value')
-        .textContent = Math.round(forecast.temperatureHigh);
-    tile.querySelector('.temp-low .value')
-        .textContent = Math.round(forecast.temperatureLow);
-  });
+    futureTiles.querySelectorAll('.date')[index].textContent = forecastFor;
+    futureTiles.querySelectorAll('.icon')[index].className = `icon ${forecast.icon}`;
+    futureTiles.querySelectorAll('.icon')[index].innerHTML = `<span class="sr-only">${parseIcon(forecast.icon)}</span>`;
+    futureTiles.querySelectorAll('.temp-high')[index].querySelector('.value').textContent = Math.round(forecast.temperatureHigh);
+    futureTiles.querySelectorAll('.temp-low')[index].querySelector('.value').textContent = Math.round(forecast.temperatureLow);
+  }
 
   // If the loading spinner is still visible, remove it.
   const spinner = card.querySelector('.card-spinner');
