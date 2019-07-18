@@ -63,6 +63,7 @@ function removeLocation(evt) {
     delete weatherApp.selectedLocations[parent.id];
     saveLocationList(weatherApp.selectedLocations);
   }
+  parent.remove();
 }
 
 /**
