@@ -58,12 +58,11 @@ function addLocation() {
  */
 function removeLocation(evt) {
   const parent = evt.srcElement.parentElement;
-  parent.setAttribute('hidden', true);
+  parent.remove();
   if (weatherApp.selectedLocations[parent.id]) {
     delete weatherApp.selectedLocations[parent.id];
     saveLocationList(weatherApp.selectedLocations);
   }
-  parent.remove();
 }
 
 /**
