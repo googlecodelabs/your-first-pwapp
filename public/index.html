@@ -22,22 +22,28 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather PWA</title>
-  <meta name="codelab" content="your-first-pwa-v3">
+  <title>Josh Hanson Weather</title>
   <link rel="stylesheet" type="text/css" href="/styles/inline.css">
   <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
 
   <!-- CODELAB: Add link rel manifest -->
+  <link rel="manifest" href="/manifest.json">
   <!-- CODELAB: Add iOS meta tags and icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"> 
+  <meta name="apple-mobile-web-app-title" content="Weather PWA">
+  <link rel="apple-touch-icon" href="/images/icons/icon-152x152.png">
   <!-- CODELAB: Add description here -->
+  <meta name="Josh Hanson" content="Sweet Weather Application">
+  <meta name="description" content="A sweet weather app">
   <!-- CODELAB: Add meta theme-color -->
-
+  <meta name="theme-color" content="#2F3BA2" />
 </head>
 <body>
 
   <header class="header">
     <h1>
-      Weather PWA
+      Hanson Family Weather
       <a href="https://darksky.net/poweredby/" class="powered-by">
         Powered by Dark Sky
       </a>
@@ -51,11 +57,6 @@
     <button id="butAdd" class="fab" aria-label="Add">
       <span class="icon add"></span>
     </button>
-
-    <div id="about" class="weather-card">
-      <b>Your First Progressive Web App Codelab</b><br>
-      Get started at <a href="https://g.co/codelabs/pwa">https://g.co/codelabs/pwa</a>.
-    </div>
 
     <div id="weather-template" class="weather-card" hidden>
       <div class="card-spinner">
@@ -181,12 +182,12 @@
             Values are lat/lon values, use Google Maps to find and add
             additional cities.
           -->
-          <option value="28.6472799,76.8130727">Dehli, India</option>
-          <option value="-5.7759362,106.1174957">Jakarta, Indonesia</option>
-          <option value="51.5287718,-0.2416815">London, UK</option>
-          <option value="40.6976701,-74.2598666">New York, USA</option>
-          <option value="48.8589507,2.2770202">Paris, France</option>
-          <option value="-64.8251018,-63.496847">Port Lockroy, Antarctica</option>
+          <option value="43.997344,-92.449644">Hanson House</option>
+          <option value="44.557866,-92.725083">Mad JAXX</option>
+          <option value="45.638011,-95.466529">Cabin</option>
+          <option value="47.375865,-122.223539">Grandma in Kent</option>
+          <option value="46.935723,-121.474018">Chrystal Mt. Base</option>
+          <option value="46.936157,-121.474018">Chrystal Mt. Summit</option>
           <option value="37.757815,-122.5076401">San Francisco, USA</option>
           <option value="31.2243085,120.9162955">Shanghai, China</option>
           <option value="35.6735408,139.5703032">Tokyo, Japan</option>
@@ -202,8 +203,17 @@
   <script src="/scripts/luxon-1.11.4.js"></script>
   <script src="/scripts/app.js"></script>
   <!-- CODELAB: Add the install script here -->
+  <script src="/scripts/install.js"></script>
   <script>
     // CODELAB: Register service worker.
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then((reg) => {
+          console.log('Service worker registered.', reg);
+        });
+      });
+    }
   </script>
 
 </body>
