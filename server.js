@@ -17,7 +17,7 @@
  * limitations under the License
  */
 'use strict';
-
+require('dotenv').config();
 const express = require('express');
 const fetch = require('node-fetch');
 const redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
