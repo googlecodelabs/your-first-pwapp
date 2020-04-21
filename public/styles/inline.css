@@ -171,56 +171,76 @@ body {
   background-image: url("/images/add.svg");
 }
 
-.icon.clear-day {
-  background-image: url("/images/clear-day.svg");
+.icon.i01d {
+  background-image: url("/images/01d.png");
 }
 
-.icon.clear-night {
-  background-image: url("/images/clear-night.svg");
+.icon.i01n {
+  background-image: url("/images/01n.png");
 }
 
-.icon.rain {
-  background-image: url("/images/rain.svg");
+.icon.i02d {
+  background-image: url("/images/02d.png");
 }
 
-.icon.snow {
-  background-image: url("/images/snow.svg");
+.icon.i02n {
+  background-image: url("/images/02n.png");
 }
 
-.icon.sleet {
-  background-image: url("/images/sleet.svg");
+.icon.i03d {
+  background-image: url("/images/03d.png");
 }
 
-.icon.wind {
-  background-image: url("/images/wind.svg");
+.icon.i03n {
+  background-image: url("/images/03n.png");
 }
 
-.icon.fog {
-  background-image: url("/images/fog.svg");
+.icon.i04d {
+  background-image: url("/images/04d.png");
 }
 
-.icon.cloudy {
-  background-image: url("/images/cloudy.svg");
+.icon.i04n {
+  background-image: url("/images/04n.png");
 }
 
-.icon.partly-cloudy-day {
-  background-image: url("/images/partly-cloudy-day.svg");
+.icon.i09d {
+  background-image: url("/images/09d.png");
 }
 
-.icon.partly-cloudy-night {
-  background-image: url("/images/partly-cloudy-night.svg");
+.icon.i09n {
+  background-image: url("/images/09n.png");
 }
 
-.icon.hail {
-  background-image: url("/images/hail.svg");
+.icon.i10d {
+  background-image: url("/images/10d.png");
 }
 
-.icon.thunderstorm {
-  background-image: url("/images/thunderstorm.svg");
+.icon.i10n {
+  background-image: url("/images/10n.png");
 }
 
-.icon.tornado {
-  background-image: url("/images/tornado.svg");
+.icon.i11d {
+  background-image: url("/images/11d.png");
+}
+
+.icon.i11n {
+  background-image: url("/images/11n.png");
+}
+
+.icon.i13d {
+  background-image: url("/images/13d.png");
+}
+
+.icon.i13n {
+  background-image: url("/images/13n.png");
+}
+
+.icon.i50d {
+  background-image: url("/images/50d.png");
+}
+
+.icon.i50n {
+  background-image: url("/images/50n.png");
 }
 
 /**
